@@ -17,7 +17,11 @@ class _HomepageState extends State<Homepage> {
   void _onItemTapped(int index) {
     if (index == 1) {
       Navigator.pushNamed(context, '/CartPage');
-    } else {
+    }
+    if (index == 2) {
+      Navigator.pushNamed(context, '/AddPage');
+    }
+     else {
       setState(() {
         _selectedIndex = index;
       });

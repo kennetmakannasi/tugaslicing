@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/Pages/FormPage.dart';
 import 'package:food_app/Widgets/AllBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPage extends StatelessWidget {
+  
   AddPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: Column(
           children: [
             Allbarwidget(),
@@ -19,7 +20,6 @@ class AddPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(25),
@@ -31,7 +31,14 @@ class AddPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: InkWell(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: (){
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => Formpage()));
+                      },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -136,7 +143,6 @@ class AddPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

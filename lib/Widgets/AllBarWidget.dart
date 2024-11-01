@@ -13,6 +13,9 @@ class Allbarwidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(

@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(scaffoldBackgroundColor: const Color(0xffff5f5f3)),
       routes: {
-        "/": (context) => Formpage(),
-        "/Cart": (context) => Cartpage(),
-        "/Add": (context) => AddPage(),
-        "/Form":(context) => Homepage()
+        "/": (context) => Homepage(),
+        "/CartPage": (context) => Cartpage(),
+        "/AddPage": (context) => AddPage(),
+        "/FormPage":(context) => Formpage()
       },
     );
   }
