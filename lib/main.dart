@@ -3,10 +3,16 @@ import 'package:food_app/Pages/CartPage.dart';
 import 'package:food_app/Pages/HomePage.dart';
 import 'package:food_app/Pages/AddPage.dart';
 import 'package:food_app/Pages/FormPage.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
+
+  FlutterNativeSplash.remove();
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
