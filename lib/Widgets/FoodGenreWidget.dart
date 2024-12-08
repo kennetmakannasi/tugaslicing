@@ -87,14 +87,15 @@ class _FoodgenrewidgetState extends State<Foodgenrewidget> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    // Kirim item ke halaman Cart
+                                    // Passing the selected item to Cartpage
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Cartpage(),
+                                        builder: (context) => Cartpage(
+                                          addedItem: item,  // Passing the selected item
+                                        ),
                                       ),
                                     ).then((_) {
-                                      // Optional: Call setState if needed after returning
                                       setState(() {});
                                     });
                                   },
