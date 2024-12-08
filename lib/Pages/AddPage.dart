@@ -3,146 +3,187 @@ import 'package:food_app/Pages/FormPage.dart';
 import 'package:food_app/Widgets/AllBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AddPage extends StatelessWidget {
-  
-  AddPage({super.key});
+final supabase = Supabase.instance.client;
+
+Future<List<dynamic>> fetchFood() async {
+  final List<Map<String, dynamic>> response = await supabase.from('Food').select('*');
+  return response as List<dynamic>;
+}
+
+class AddPage extends StatefulWidget {
+  const AddPage({super.key});
+
+  @override
+  State<AddPage> createState() => _AddPageState();
+}
+
+class _AddPageState extends State<AddPage> {
+  late Future<List<dynamic>> _foodData;
+
+  @override
+  void initState() {
+    super.initState();
+    _foodData = fetchFood(); // Mengambil data saat pertama kali halaman dibangun
+  }
+
+  // Method untuk refresh data
+  Future<void> _refreshData() async {
+    setState(() {
+      _foodData = fetchFood(); // Memanggil ulang fetchFood() untuk memperbarui data
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-          children: [
-            Allbarwidget(),
-            Container(
-              padding: const EdgeInsets.all(30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+      body: Column(
+        children: [
+          Allbarwidget(),
+          Container(
+            padding: const EdgeInsets.all(30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 5,
                       ),
-                      onPressed: (){
-                        Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => Formpage()));
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Add Data',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ),
-                          const SizedBox(width: 2),
-                          const Icon(
-                            Icons.add,
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Formpage()),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Add Data',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
                             color: Colors.white,
-                            size: 10,
+                            fontSize: 10,
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Row(
-                children: [
-                  Padding(padding: EdgeInsets.only(left: 20),
-                  child: Text("Foto"),
-                  ),
-                  Padding(padding: EdgeInsets.only(left: 50),
-                  child: Text("Nama Produk"),
-                  ),
-                  Padding(padding: EdgeInsets.only(left: 50),
-                  child: Text("Harga"),
-                  ),
-                  Padding(padding: EdgeInsets.only(left: 50),
-                  child: Text("Aksi"),
-                  ),
-                  
-                ],
-              ),
-            ),
-            Divider(),
-            Expanded(
-              child: ListView(
-                children: [
-                  ListTile(
-                    leading: Image.asset(
-                      'burger.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Row(
-                      children: [
-                        Text(
-                          'Burger King Medium',
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
                         ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Rp.50.000',
-                          style: TextStyle(color: Colors.grey,fontSize: 14),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 10,
                         ),
                       ],
                     ),
-                    trailing: IconButton(
-                      icon: Icon(CupertinoIcons.trash, color: Colors.red),
-                      onPressed: () {},
-                    ),
                   ),
-                  Divider(),
-                  ListTile(
-                    leading: Image.asset(
-                      'teh_botol.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Row(
-                      children: [
-                        Text(
-                          'Teh Botol',
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Rp.4.000',
-                          style: TextStyle(color: Colors.grey,fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(CupertinoIcons.trash, color: Colors.red),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Divider(),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
+          ),
+          const Divider(),
+          Expanded(
+            child: FutureBuilder<List<dynamic>>(
+              future: _foodData, // Menggunakan _foodData yang merupakan Future yang akan dipanggil ulang
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No data found'));
+                } else {
+                  final data = snapshot.data!;
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: 16, // Add spacing between columns
+                      columns: const <DataColumn>[
+                        DataColumn(label: Text('Foto')),
+                        DataColumn(label: Text('Nama Produk')),
+                        DataColumn(label: Text('Harga')),
+                        DataColumn(label: Text('Aksi')),
+                      ],
+                      rows: data.map((item) {
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              Padding(
+                                padding: const EdgeInsets.all(8.0), // Add padding
+                                child: item['food_image'] != null
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.asset(
+                                          'assets/${item['food_image']}',
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.image_not_supported,
+                                        color: Colors.grey,
+                                      ),
+                              ),
+                            ),
+                            DataCell(Text(item['food_name'] ?? '')),
+                            DataCell(Text('Rp.${item['food_price']}')),
+                            DataCell(
+                              IconButton(
+                                icon: const Icon(CupertinoIcons.trash, color: Colors.red),
+                                onPressed: () async {
+                                  final confirmDelete = await showDialog<bool>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Confirm Delete'),
+                                        content: const Text('Are you sure you want to delete this item?'),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: const Text('Delete'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  if (confirmDelete == true) {
+                                    await supabase.from('Food').delete().eq('id', item['id']);
+                                    _refreshData(); // Menyegarkan data setelah penghapusan
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

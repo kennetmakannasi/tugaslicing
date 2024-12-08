@@ -1,22 +1,23 @@
 name: food_app
 description: "A new Flutter project."
-
 publish_to: 'none' 
-
 
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
 
-
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_native_splash: ^2.4.3
   cupertino_icons: ^1.0.6
   google_fonts: ^6.2.1
-  flutter_native_splash: ^2.4.2
+  supabase_flutter: ^2.8.1
+  confirm_dialog: ^1.0.4
+  image_picker: ^1.1.2
+  path_provider: ^2.1.5
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -26,13 +27,21 @@ dev_dependencies:
 
 flutter:
 
-
   uses-material-design: true
   assets:
   - assets/burger.png
   - assets/teh_botol.png
+  - assets/pizza.png
+  - assets/hotdog.png
+  - assets/mie.png
+  - assets/burrito.png
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/burger.png
-  
+  image: assets/pizza.png
+  android: true
+  ios: true
+  fullscreen: true
+  android_gravity: center
+  ios_content_mode: scaleAspectFill
+  web: true
